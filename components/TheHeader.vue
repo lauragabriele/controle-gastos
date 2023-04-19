@@ -1,11 +1,8 @@
 <template>
   <div class="column bg-light-green q-pb-md">
     <div class="row justify-center">
-      <span class="text-h5 color-dark text-weight-bolder q-my-lg"
-        >Controle de Gastos</span
-      >
+      <span class="text-h5 color-dark text-weight-bolder q-my-lg">Controle de Gastos</span>
     </div>
-
     <div class="row bg-light-green justify-around">
       <div class="card bg-white col-3">
         <span class="text-h6 text-info" color="info"
@@ -13,7 +10,6 @@
         </span>
         <p class="incomeDisplay text-info">R$ {{ income.toFixed(2) }}</p>
       </div>
-
       <div class="card bg-white col-3">
         <span class="text-h6 text-info"
           >Saídas <q-icon name="arrow_downward"></q-icon>
