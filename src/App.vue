@@ -1,12 +1,10 @@
 <script setup>
-import TheHeader from './components/TheHeader.vue'
+import { HomePage } from './views'
+
 </script>
 
 <template>
-  <TheHeader />
-  <div>
-
-  </div>
+  <HomePage />
 </template>
 
 <style scoped>

@@ -29,8 +29,6 @@
       </div>
     </div>
   </div>
-
-  <div>
     <div class="q-app" style="min-height: 100vh">
       <div class="q-pa-md"></div>
       <q-btn
@@ -66,9 +64,7 @@
                 color="black"
                 label="Data"
               >
-                <template v-slot:prepend>
-                  <q-icon name="event"></q-icon>
-                </template>
+ 
               </q-input>
               <div class="justify-around">
                 <q-btn color="red" @click="cancel()"> Cancelar </q-btn>
@@ -81,14 +77,22 @@
           <div></div>
         </q-dialog>
       </q-btn>
-          
-            <q-table
-
-        :rows="rows"
-        :columns="columns"
-  ></q-table>     
-    </div>
-  </div>
+      <div id="q-app"></div>
+  <div class="q-pa-md"></div>
+    <div class="row q-col-gutter-sm"></div>
+      <div class="col"></div>
+        <q-table
+          :rows="rows"
+          :columns="columns"
+        >
+          <template v-slot:body-cell-actions="props">
+            <q-td :props="props">
+              <q-btn dense round flat color="grey" @click="editRow(props)" icon="edit"></q-btn>
+              <q-btn dense round flat color="grey" @click="deleteRow(props)" icon="delete"></q-btn>
+            </q-td>          
+          </template>
+        </q-table>
+      </div>
 </template>
 
 <script setup>
@@ -117,6 +121,12 @@ const columns = [
     align: 'center',
     field: 'date',
   },
+  {
+    name: 'actions',
+    align: 'center',
+    label: 'Action',
+    field: ''
+  }
 ];
 
 function newTransaction() {
@@ -131,7 +141,7 @@ function save() {
   const newTransaction = {
     name: name.value,
     value: value.value,
-    date: date.value,
+    date: date,
   };
   rows.value.push(newTransaction);
   openModal.value = false;
@@ -143,6 +153,7 @@ function save() {
   }
   total.value += newTransaction.value;
 }
+
 
 </script>
 
