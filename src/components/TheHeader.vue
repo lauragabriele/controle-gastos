@@ -7,92 +7,98 @@
     </div>
 
     <div class="row bg-light-green justify-around">
-      <div class="card bg-white col-3">
-        <span class="text-h6 text-info" color="info"
+      <div class="card bg-white col-3 q-py-md q-px-md">
+        <span class="text-h6 text-info"
           >Entradas <q-icon name="arrow_upward" />
         </span>
-        <p class="incomeDisplay text-info">R$ {{ income.toFixed(2) }}</p>
+        <p class="incomeDisplay text-info">
+          R$ {{ income.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
+        </p>
       </div>
 
-      <div class="card bg-white col-3">
+      <div class="card bg-white col-3 q-py-md q-px-md">
         <span class="text-h6 text-info"
           >Saídas <q-icon name="arrow_downward"></q-icon>
         </span>
-        <p class="expenseDisplay text-info bg-">R$ {{ expense.toFixed(2) }}</p>
+        <p class="expenseDisplay text-info bg-">
+          R$ {{ expense.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
+        </p>
       </div>
 
-      <div class="card total col-3 bg-blue-grey-4">
+      <div class="card total col-3 bg-blue-grey-4 q-py-md q-px-md">
         <span class="text-h6 text-white text-weight-bolder">
-          Total <q-icon name="attach_money"></q-icon>
+          Total <q-icon name="attach_money" />
         </span>
-        <p class="totalDisplay text-white">R$ {{ total.toFixed(2) }}</p>
+        <p class="totalDisplay text-white">
+          R$ {{ total.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
+        </p>
       </div>
     </div>
   </div>
-    <div class="q-app" style="min-height: 100vh">
-      <div class="q-pa-md"></div>
-      <q-btn
-        outline
-        color="blue-grey"
-        label="+Nova Transação"
-        class="border"
-        @click="newTransaction"
-      >
-        <q-dialog v-model="openModal">
-          <q-card class="card-width">
-            <span>Nova Transação</span>
-            <q-card-section>
-              <q-input
-                rounded
-                outlined
-                v-model="name"
-                label="Descrição"
-                color="dark"
-              ></q-input>
-              <q-input
-                v-model.number="value"
-                type="number"
-                style="max-width: 200px"
-                color="black"
-                label="Valor"
-              ></q-input>
-              <q-input
-                square
-                filled
-                v-model="date"
-                type="date"
-                color="black"
-                label="Data"
-              >
- 
-              </q-input>
-              <div class="justify-around">
-                <q-btn color="red" @click="cancel()"> Cancelar </q-btn>
+  <div class="app">
+    <div class="q-pa-md"></div>
+    <q-btn
+      outline
+      color="blue-grey"
+      label="+Nova Transação"
+      class="border"
+      @click="newTransaction"
+    >
+      <q-dialog v-model="openModal">
+        <q-card class="card-width">
+          <span>Nova Transação</span>
+          <q-card-section>
+            <q-input
+              rounded
+              outlined
+              v-model="name"
+              label="Descrição"
+              color="dark"
+            ></q-input>
+            <q-input
+              v-bind:value="'R$ ' + { minimumFractionDigits: 2 }"
+              v-model.number="value"
+              type="number"
+              style="max-width: 200px"
+              color="black"
+              label="Valor"
+            ></q-input>
+            <q-input
+              square
+              filled
+              v-model="date"
+              type="date"
+              color="black"
+              label="Data"
+            >
+            </q-input>
+            <div class="justify-around">
+              <q-btn color="red" label="Cancelar" @click="cancel()"></q-btn>
 
-                <q-btn color="green" @click="save()">Salvar</q-btn>
-              </div>
-            </q-card-section>
-          </q-card>
-
-          <div></div>
-        </q-dialog>
-      </q-btn>
-      <div id="q-app"></div>
-  <div class="q-pa-md"></div>
+              <q-btn color="green" @click="save()">Salvar</q-btn>
+            </div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </q-btn>
+    <div class="q-pa-md"></div>
     <div class="row q-col-gutter-sm"></div>
-      <div class="col"></div>
-        <q-table
-          :rows="rows"
-          :columns="columns"
-        >
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props">
-              <q-btn dense round flat color="grey" @click="editRow(props)" icon="edit"></q-btn>
-              <q-btn dense round flat color="grey" @click="deleteRow(props)" icon="delete"></q-btn>
-            </q-td>          
-          </template>
-        </q-table>
-      </div>
+    <div class="col"></div>
+    <q-table :rows="rows" :columns="columns">
+      <template v-slot:body-cell-actions="props">
+        <q-td :props="props">
+          <q-btn
+            dense
+            round
+            flat
+            color="grey"
+            @click="deleteRow(props)"
+            icon="delete"
+          />
+        </q-td>
+      </template>
+    </q-table>
+  </div>
 </template>
 
 <script setup>
@@ -107,26 +113,24 @@ const openModal = ref(false);
 const rows = ref([]);
 const columns = [
   {
-    label: 'Descrição',
-    align: 'left',
-    field:  'name'
+    label: "Descrição",
+    align: "left",
+    field: "name",
   },
   {
-    label: 'Valor',
-    align: 'center',
-    field: 'value',
+    label: "Valor",
+    align: "center",
+    field: "value",
   },
   {
-    label: 'Data',
-    align: 'center',
-    field: 'date',
+    label: "Data",
+    align: "center",
+    field: "date",
   },
   {
-    name: 'actions',
-    align: 'center',
-    label: 'Action',
-    field: ''
-  }
+    name: "actions",
+    align: "center",
+  },
 ];
 
 function newTransaction() {
@@ -141,7 +145,7 @@ function save() {
   const newTransaction = {
     name: name.value,
     value: value.value,
-    date: date,
+    date: date.value,
   };
   rows.value.push(newTransaction);
   openModal.value = false;
@@ -153,18 +157,23 @@ function save() {
   }
   total.value += newTransaction.value;
 }
+function deleteRow(props) {
+  const index = props.rowIndex;
+  const value = rows.value[index].value;
 
+  rows.value.splice(index, 1);
 
+  if (value > 0) {
+    income.value -= value;
+  } else {
+    expense.value -= value;
+  }
+  total.value -= value;
+}
 </script>
 
 <style scoped>
 .card {
-  /* background: white; */
-  padding: 1.5rem 2rem;
   border-radius: 0.25rem;
-}
-
-.card-width {
-  width: 20vw;
 }
 </style>
