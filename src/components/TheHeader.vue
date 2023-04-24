@@ -7,36 +7,35 @@
     </div>
 
     <div class="row bg-light-green justify-around">
-      <div class="card bg-white col-3 q-py-md q-px-md">
+      <div class="card bg-white col-3 q-pa-md">
         <span class="text-h6 text-info"
           >Entradas <q-icon name="arrow_upward" />
         </span>
-        <p class="incomeDisplay text-info">
+        <p class="income-display text-info">
           R$ {{ income.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
         </p>
       </div>
 
-      <div class="card bg-white col-3 q-py-md q-px-md">
+      <div class="card bg-white col-3 q-pa-md">
         <span class="text-h6 text-info"
           >Saídas <q-icon name="arrow_downward"></q-icon>
         </span>
-        <p class="expenseDisplay text-info bg-">
+        <p class="expense-display text-info bg-">
           R$ {{ expense.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
         </p>
       </div>
 
-      <div class="card total col-3 bg-blue-grey-4 q-py-md q-px-md">
+      <div class="card total col-3 bg-blue-grey-4 q-pa-md">
         <span class="text-h6 text-white text-weight-bolder">
           Total <q-icon name="attach_money" />
         </span>
-        <p class="totalDisplay text-white">
+        <p class="total-display text-white">
           R$ {{ total.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
         </p>
       </div>
     </div>
   </div>
-  <div class="app">
-    <div class="q-pa-md"></div>
+  <div class="q-pa-md">
     <q-btn
       outline
       color="blue-grey"
@@ -44,61 +43,63 @@
       class="border"
       @click="newTransaction"
     >
-      <q-dialog v-model="openModal">
-        <q-card class="card-width">
-          <span>Nova Transação</span>
-          <q-card-section>
-            <q-input
-              rounded
-              outlined
-              v-model="name"
-              label="Descrição"
-              color="dark"
-            ></q-input>
-            <q-input
-              v-bind:value="'R$ ' + { minimumFractionDigits: 2 }"
-              v-model.number="value"
-              type="number"
-              style="max-width: 200px"
-              color="black"
-              label="Valor"
-            ></q-input>
-            <q-input
-              square
-              filled
-              v-model="date"
-              type="date"
-              color="black"
-              label="Data"
-            >
-            </q-input>
-            <div class="justify-around">
-              <q-btn color="red" label="Cancelar" @click="cancel()"></q-btn>
-
-              <q-btn color="green" @click="save()">Salvar</q-btn>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
     </q-btn>
-    <div class="q-pa-md"></div>
-    <div class="row q-col-gutter-sm"></div>
-    <div class="col"></div>
-    <q-table :rows="rows" :columns="columns">
-      <template v-slot:body-cell-actions="props">
-        <q-td :props="props">
-          <q-btn
-            dense
-            round
-            flat
-            color="grey"
-            @click="deleteRow(props)"
-            icon="delete"
-          />
-        </q-td>
-      </template>
-    </q-table>
   </div>
+
+  <q-dialog v-model="openModal">
+    <q-card class="card-width">
+      <span>Nova Transação</span>
+      <q-card-section>
+        <q-input
+          rounded
+          outlined
+          v-model="name"
+          label="Descrição"
+          color="dark"
+        ></q-input>
+        <q-input
+          v-bind:value="'R$ ' + { minimumFractionDigits: 2 }"
+          v-model.number="value"
+          type="number"
+          style="max-width: 200px"
+          color="black"
+          label="Valor"
+        ></q-input>
+        <q-input
+          square
+          filled
+          v-model="date"
+          type="date"
+          color="black"
+          label="Data"
+        >
+        </q-input>
+        <div class="justify-around">
+          <q-btn color="red" label="Cancelar" @click="cancel()"></q-btn>
+
+          <q-btn color="green" label="Salvar" @click="save()"></q-btn>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+
+  <div class="q-pa-md"></div>
+  <div class="row q-col-gutter-sm"></div>
+  <div class="col"></div>
+  <q-table :rows="rows" :columns="columns">
+    <template v-slot:body-cell-actions="row">
+      <q-td :row="row">
+        <q-btn
+          dense
+          round
+          flat
+          color="grey"
+          @click="deleteRow(row)"
+          icon="delete"
+        />
+      </q-td>
+    </template>
+  </q-table>
 </template>
 
 <script setup>
@@ -157,8 +158,8 @@ function save() {
   }
   total.value += newTransaction.value;
 }
-function deleteRow(props) {
-  const index = props.rowIndex;
+function deleteRow(row) {
+  const index = row.rowIndex;
   const value = rows.value[index].value;
 
   rows.value.splice(index, 1);
